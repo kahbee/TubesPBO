@@ -1,0 +1,5 @@
+com\clockify\clockify\Database.class
+com\clockify\model\Departemen.class
+com\clockify\model\Kantor.class
+com\clockify\gui\Main.class
+com\clockify\gui\Main$1.class
