@@ -33,6 +33,7 @@ public class Absensi extends javax.swing.JFrame {
         buttonHadir = new javax.swing.JButton();
         buttonIzin = new javax.swing.JButton();
         labelNama = new javax.swing.JLabel();
+        buttonBack = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
@@ -60,27 +61,31 @@ public class Absensi extends javax.swing.JFrame {
 
         labelNama.setText("Nama");
 
+        buttonBack.setText("Back");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(labelJam, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1)
                             .addComponent(labelTanggal)
-                            .addComponent(labelNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(labelNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(221, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
+                        .addComponent(buttonBack)
+                        .addGap(38, 38, 38)
                         .addComponent(buttonHadir)
-                        .addGap(50, 50, 50)
-                        .addComponent(buttonIzin)))
-                .addContainerGap(59, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonIzin)
+                        .addGap(21, 21, 21))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +101,8 @@ public class Absensi extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonHadir)
-                    .addComponent(buttonIzin))
+                    .addComponent(buttonIzin)
+                    .addComponent(buttonBack))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -147,6 +153,7 @@ public class Absensi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonBack;
     private javax.swing.JButton buttonHadir;
     private javax.swing.JButton buttonIzin;
     private javax.swing.JLabel jLabel1;
