@@ -1,9 +1,10 @@
 package com.clockify.gui;
 
 import com.clockify.clockify.Database;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -17,12 +18,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        try {
-            db.executeQuery("SELECT 1");
-            jLabel1.setText("db connected");
-        } catch (SQLException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -37,9 +32,9 @@ public class Main extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         TFemail = new javax.swing.JTextField();
-        TFpassword = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         BLogin = new javax.swing.JButton();
+        TFpassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +51,11 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setText("Login");
 
         BLogin.setText("Login");
+        BLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -66,22 +66,22 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(97, 97, 97)
+                .addComponent(BLogin)
+                .addContainerGap(89, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(39, 39, 39)
-                                .addComponent(TFemail, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(TFpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(BLogin)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TFpassword))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addComponent(TFemail, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,6 +107,36 @@ public class Main extends javax.swing.JFrame {
     private void TFemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TFemailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TFemailActionPerformed
+
+    private void BLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BLoginActionPerformed
+        String email = TFemail.getText();
+        String password = TFpassword.getText();
+        
+        if (email.isEmpty() || email.isBlank() || password.isEmpty() || password.isBlank()) {
+            return;
+        }
+
+        try {
+            ResultSet rs = db.executeQuery("SELECT * FROM karyawan WHERE email=?", email);
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(this, "User not found");
+                return;
+            }
+            
+            String storedPassword = rs.getString("password");
+            if (!BCrypt.checkpw(password, storedPassword)) {
+                JOptionPane.showMessageDialog(this, "Incorrect password. Please try again.");
+                return;
+            }
+            
+            Absensi absensi = new Absensi();
+            absensi.setLocationRelativeTo(this);
+            absensi.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_BLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,7 +168,9 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                Main m = new Main();
+                m.setLocationRelativeTo(null);
+                m.setVisible(true);
             }
         });
     }
@@ -146,7 +178,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BLogin;
     private javax.swing.JTextField TFemail;
-    private javax.swing.JTextField TFpassword;
+    private javax.swing.JPasswordField TFpassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
