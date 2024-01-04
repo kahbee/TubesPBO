@@ -1,5 +1,17 @@
 com\clockify\clockify\Database.class
+com\clockify\model\BisaAbsen.class
+com\clockify\model\Karyawan.class
+com\clockify\gui\DetailKaryawan$1.class
+com\clockify\model\DaftarAbsensi.class
+com\clockify\gui\TambahTugas$1.class
+com\clockify\gui\DetailKaryawan.class
+com\clockify\model\Absensi.class
+com\clockify\gui\TambahTugas.class
+com\clockify\gui\DetailKaryawan$2.class
 com\clockify\model\Departemen.class
+com\clockify\gui\TambahTugas$2$1.class
 com\clockify\model\Kantor.class
 com\clockify\gui\Main.class
 com\clockify\gui\Main$1.class
+com\clockify\gui\TambahTugas$2.class
+com\clockify\gui\DetailKaryawan$3.class
