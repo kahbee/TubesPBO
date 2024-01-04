@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2023 at 03:54 PM
+-- Generation Time: Jan 04, 2024 at 03:32 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -43,21 +43,17 @@ CREATE TABLE `absensi` (
 
 CREATE TABLE `departemen` (
   `id` int(11) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `id_kantor` int(11) NOT NULL
+  `nama` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `kantor`
+-- Dumping data for table `departemen`
 --
 
-CREATE TABLE `kantor` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `alamat` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `departemen` (`id`, `nama`) VALUES
+(1, 'Akuntansi'),
+(2, 'Pemasaran'),
+(3, 'Pengembangan Produk');
 
 -- --------------------------------------------------------
 
@@ -76,6 +72,13 @@ CREATE TABLE `karyawan` (
   `posisi` varchar(100) NOT NULL,
   `departemenDikelola` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `karyawan`
+--
+
+INSERT INTO `karyawan` (`id`, `nama`, `jenisKelamin`, `noHP`, `email`, `password`, `id_departemen`, `posisi`, `departemenDikelola`) VALUES
+(1, 'admin', 'M', '08123456789', 'admin@admin.com', '$2y$10$OeAhdTig.by9bEitwzGJFeCcEKr1Sgx15.lN45XyY4ozvVl58zMuy', 1, 'administrasi', NULL);
 
 -- --------------------------------------------------------
 
@@ -104,13 +107,6 @@ ALTER TABLE `absensi`
 -- Indexes for table `departemen`
 --
 ALTER TABLE `departemen`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_kantor` (`id_kantor`);
-
---
--- Indexes for table `kantor`
---
-ALTER TABLE `kantor`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -142,19 +138,13 @@ ALTER TABLE `absensi`
 -- AUTO_INCREMENT for table `departemen`
 --
 ALTER TABLE `departemen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `kantor`
---
-ALTER TABLE `kantor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tugas`
@@ -171,12 +161,6 @@ ALTER TABLE `tugas`
 --
 ALTER TABLE `absensi`
   ADD CONSTRAINT `absensi_ibfk_1` FOREIGN KEY (`id_karyawan`) REFERENCES `karyawan` (`id`);
-
---
--- Constraints for table `departemen`
---
-ALTER TABLE `departemen`
-  ADD CONSTRAINT `departemen_ibfk_1` FOREIGN KEY (`id_kantor`) REFERENCES `kantor` (`id`);
 
 --
 -- Constraints for table `karyawan`
