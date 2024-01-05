@@ -1,10 +1,15 @@
 package com.clockify.gui;
 
+import com.clockify.clockify.Database;
 import com.clockify.model.Karyawan;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
+
 import javax.swing.Timer;
 
 /**
@@ -12,6 +17,7 @@ import javax.swing.Timer;
  * @author khusyasy
  */
 public class Menu extends javax.swing.JFrame {
+    private Database db = new Database();
     private final Karyawan user;
 
     /**
@@ -32,6 +38,8 @@ public class Menu extends javax.swing.JFrame {
         });
         LBJam.setText(new SimpleDateFormat("HH:mm:ss").format(new Date()));
         timer.start();
+        
+        LBTanggal.setText(new SimpleDateFormat("EEEE, dd MMMM yyyy").format(new Date()));
     }
 
     /**
@@ -91,7 +99,11 @@ public class Menu extends javax.swing.JFrame {
             .addComponent(LBJam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(62, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(BTIzin)
+                        .addGap(18, 18, 18)
+                        .addComponent(BTHadir))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelTanggal)
@@ -99,11 +111,8 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LBTanggal)
-                            .addComponent(LBNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(BTIzin))
-                .addGap(18, 18, 18)
-                .addComponent(BTHadir)
-                .addContainerGap(94, Short.MAX_VALUE))
+                            .addComponent(LBNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,11 +179,25 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTIzinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTIzinActionPerformed
-        // TODO add your handling code here:
+        String alasan = JOptionPane.showInputDialog(this, "Alasan", "Izin", JOptionPane.QUESTION_MESSAGE);
+        if (alasan == null || alasan.isEmpty() || alasan.isBlank()) {
+            return;
+        }
+        try {
+            db.executeUpdate("INSERT INTO absensi (waktu, id_karyawan, status, alasan) VALUES (?, ?, ?, ?)", new Date(), user.getId(), "izin", alasan);
+            JOptionPane.showMessageDialog(this, "Izin berhasil dikirim", "Absensi", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BTIzinActionPerformed
 
     private void BTHadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTHadirActionPerformed
-        // TODO add your handling code here:
+        try {
+            db.executeUpdate("INSERT INTO absensi (waktu, id_karyawan, status) VALUES (?, ?, ?)", new Date(), user.getId(), "hadir");
+            JOptionPane.showMessageDialog(this, "Absensi berhasil dikirim", "Absensi", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BTHadirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

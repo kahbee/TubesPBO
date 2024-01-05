@@ -127,13 +127,13 @@ public class Login extends javax.swing.JFrame {
         try {
             ResultSet rs = db.executeQuery("SELECT * FROM karyawan WHERE email=?", email);
             if (!rs.next()) {
-                JOptionPane.showMessageDialog(this, "User not found");
+                JOptionPane.showMessageDialog(this, "Email tidak ditemukan", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
             String storedPassword = rs.getString("password");
             if (!BCrypt.checkpw(password, storedPassword)) {
-                JOptionPane.showMessageDialog(this, "Incorrect password. Please try again.");
+                JOptionPane.showMessageDialog(this, "Password salah", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -154,7 +154,7 @@ public class Login extends javax.swing.JFrame {
             frame.setVisible(true);
             this.dispose();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BLoginActionPerformed
 
