@@ -1,22 +1,31 @@
 package com.clockify.gui;
 
 import com.clockify.clockify.Database;
+import com.clockify.model.Administrasi;
+import com.clockify.model.Karyawan;
+import com.clockify.model.Manager;
+import com.clockify.model.PekerjaBiasa;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import javax.swing.JOptionPane;
+
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.clockify.model.Teknisi;
 
 /**
  *
  * @author khusyasy
  */
-public class Main extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
     Database db = new Database();
 
     /**
      * Creates new form Main
      */
-    public Main() {
+    public Login() {
         initComponents();
     }
 
@@ -48,7 +57,8 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Login");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Clockify App");
 
         BLogin.setText("Login");
         BLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -62,31 +72,29 @@ public class Main extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(BLogin)
-                .addContainerGap(89, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TFpassword))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(TFemail, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16))
+                        .addComponent(BLogin)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TFemail)
+                            .addComponent(TFpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                        .addGap(16, 16, 16))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -128,10 +136,22 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Incorrect password. Please try again.");
                 return;
             }
+
+            String posisi = rs.getString("posisi");
+            Karyawan k;
+            if (posisi.equalsIgnoreCase("administrasi")) {
+                k =  new Administrasi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+            } else if (posisi.equalsIgnoreCase("teknisi")) {
+                k =  new Teknisi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+            } else if (posisi.equalsIgnoreCase("manager")) {
+                k =  new Manager(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+            } else {
+                k =  new PekerjaBiasa(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+            }
             
-            Absensi absensi = new Absensi();
-            absensi.setLocationRelativeTo(this);
-            absensi.setVisible(true);
+            Menu frame = new Menu(k);
+            frame.setLocationRelativeTo(this);
+            frame.setVisible(true);
             this.dispose();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
@@ -155,20 +175,21 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Main m = new Main();
+                Login m = new Login();
                 m.setLocationRelativeTo(null);
                 m.setVisible(true);
             }
