@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.clockify.model.Departemen;
 import com.clockify.model.Teknisi;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -148,15 +149,23 @@ public class Login extends javax.swing.JFrame {
             }
 
             String posisi = rs.getString("posisi");
+
+            ResultSet rsD = db.executeQuery("SELECT d.id, d.nama FROM karyawan k JOIN departemen d ON d.id = k.id_departemen WHERE k.id = ?", rs.getInt("id"));
+            if (!rsD.next()) {
+                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             Karyawan k;
+            Departemen d = new Departemen(rsD.getInt("d.id"), rsD.getString("d.nama"));
             if (posisi.equalsIgnoreCase("administrasi")) {
-                k =  new Administrasi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+                k =  new Administrasi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), d);
             } else if (posisi.equalsIgnoreCase("teknisi")) {
-                k =  new Teknisi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+                k =  new Teknisi(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), d);
             } else if (posisi.equalsIgnoreCase("manager")) {
-                k =  new Manager(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+                k =  new Manager(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), d);
             } else {
-                k =  new PekerjaBiasa(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), null);
+                k =  new PekerjaBiasa(rs.getInt("id"), rs.getString("nama"), rs.getString("jenisKelamin"), rs.getString("noHP"), rs.getString("email"), d);
             }
             
             Menu frame = new Menu(k);

@@ -1,20 +1,26 @@
 package com.clockify.gui;
 
 import com.clockify.clockify.Database;
+import com.clockify.model.Administrasi;
 import com.clockify.model.Departemen;
 import com.clockify.model.Karyawan;
+import com.clockify.model.Manager;
+import com.clockify.model.PekerjaBiasa;
+import com.clockify.model.Teknisi;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,7 +30,11 @@ public class Menu extends javax.swing.JFrame {
     private Database db = new Database();
     private final Karyawan user;
     
+    private ArrayList<Departemen> DepList = new ArrayList<>();
     private Departemen DepSel = null;
+    
+    private ArrayList<Karyawan> KarList = new ArrayList<>();
+    private Karyawan KarSel = null;
 
     /**
      * Creates new form Menu
@@ -35,6 +45,7 @@ public class Menu extends javax.swing.JFrame {
         initComponents();
         setupDisplay();
         loadDepartemen();
+        loadKaryawan();
     }
 
     private void setupDisplay() {
@@ -49,15 +60,44 @@ public class Menu extends javax.swing.JFrame {
         LBTanggal.setText(new SimpleDateFormat("EEEE, dd MMMM yyyy").format(new Date()));
     }
 
-    private void loadDepartemen() {
+    public void loadDepartemen() {
+        DepList.clear();
         DefaultListModel<Departemen> LDepModel = new DefaultListModel<>();
         try {
             ResultSet rs = db.executeQuery("SELECT id, nama FROM departemen");
             while (rs.next()) {
                 Departemen dep = new Departemen(rs.getInt("id"), rs.getString("nama"));
+                DepList.add(dep);
                 LDepModel.addElement(dep);
             }
             LDep.setModel(LDepModel);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void loadKaryawan() {
+        KarList.clear();
+        DefaultTableModel TKarModel = new DefaultTableModel(new String[] {"Nama", "JK", "HP", "Email", "Departemen", "Posisi"}, 0);
+        try {
+            ResultSet rs = db.executeQuery("SELECT k.id, k.nama, k.jenisKelamin, k.noHP, k.email, d.nama, k.posisi, d.id FROM karyawan k JOIN departemen d ON k.id_departemen = d.id");
+            while (rs.next()) {
+                String[] row = new String[]{rs.getString("k.nama"), rs.getString("k.jenisKelamin"), rs.getString("k.noHP"), rs.getString("k.email"), rs.getString("d.nama"), rs.getString("k.posisi")};
+                Karyawan k;
+                Departemen d = new Departemen(rs.getInt("d.id"), rs.getString("d.nama"));
+                if (row[5].equalsIgnoreCase("administrasi")) {
+                    k =  new Administrasi(rs.getInt("k.id"), row[0], row[1], row[3], row[2], d);
+                } else if (row[5].equalsIgnoreCase("teknisi")) {
+                    k =  new Teknisi(rs.getInt("k.id"), row[0], row[1], row[3], row[2], d);
+                } else if (row[5].equalsIgnoreCase("manager")) {
+                    k =  new Manager(rs.getInt("k.id"), row[0], row[1], row[3], row[2], d);
+                } else {
+                    k =  new PekerjaBiasa(rs.getInt("k.id"), row[0], row[1], row[3], row[2], d);
+                }
+                KarList.add(k);
+                TKarModel.addRow(row);
+            }
+            TKar.setModel(TKarModel);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -94,9 +134,9 @@ public class Menu extends javax.swing.JFrame {
         BTDepCancel = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        BTTambahK = new javax.swing.JButton();
-        BTHapusK = new javax.swing.JButton();
+        TKar = new javax.swing.JTable();
+        BTKarAdd = new javax.swing.JButton();
+        BTKarEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -268,7 +308,7 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Departemen", jPanel4);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TKar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -279,16 +319,23 @@ public class Menu extends javax.swing.JFrame {
                 "Nama", "Jenis Kelamin", "no Hp", "Email", "Departemen", "Posisi"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        TKar.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(TKar);
+        TKar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        BTTambahK.setText("Tambah");
-        BTTambahK.addActionListener(new java.awt.event.ActionListener() {
+        BTKarAdd.setText("Add");
+        BTKarAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BTTambahKActionPerformed(evt);
+                BTKarAddActionPerformed(evt);
             }
         });
 
-        BTHapusK.setText("Hapus");
+        BTKarEdit.setText("Edit");
+        BTKarEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTKarEditActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -296,25 +343,26 @@ public class Menu extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BTTambahK, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(BTHapusK, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                    .addComponent(BTKarAdd)
+                    .addComponent(BTKarEdit))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(BTKarAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTKarEdit)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(BTTambahK)
-                .addGap(43, 43, 43)
-                .addComponent(BTHapusK)
-                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Karyawan", jPanel2);
@@ -354,10 +402,6 @@ public class Menu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BTHadirActionPerformed
-
-    private void BTTambahKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTTambahKActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BTTambahKActionPerformed
 
     private void clearDepInput() {
         TFDepID.setText("");
@@ -435,21 +479,38 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BTDepDeleteActionPerformed
 
+    private void BTKarAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTKarAddActionPerformed
+        FormKaryawan form = new FormKaryawan(this, true, db, null, DepList);
+        form.setLocationRelativeTo(this);
+        form.setVisible(true);
+    }//GEN-LAST:event_BTKarAddActionPerformed
+
+    private void BTKarEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTKarEditActionPerformed
+        int idx = TKar.getSelectedRow();
+        if (idx >= 0) {
+            Karyawan k = KarList.get(idx);
+            FormKaryawan form = new FormKaryawan(this, true, db, k, DepList);
+            form.setLocationRelativeTo(this);
+            form.setVisible(true);
+        }
+    }//GEN-LAST:event_BTKarEditActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTDepAdd;
     private javax.swing.JButton BTDepCancel;
     private javax.swing.JButton BTDepDelete;
     private javax.swing.JButton BTDepEdit;
     private javax.swing.JButton BTHadir;
-    private javax.swing.JButton BTHapusK;
     private javax.swing.JButton BTIzin;
-    private javax.swing.JButton BTTambahK;
+    private javax.swing.JButton BTKarAdd;
+    private javax.swing.JButton BTKarEdit;
     private javax.swing.JLabel LBJam;
     private javax.swing.JLabel LBNama;
     private javax.swing.JLabel LBTanggal;
     private javax.swing.JList<Departemen> LDep;
     private javax.swing.JTextField TFDepID;
     private javax.swing.JTextField TFDepNama;
+    private javax.swing.JTable TKar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -458,7 +519,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelNama;
     private javax.swing.JLabel labelTanggal;
     // End of variables declaration//GEN-END:variables
