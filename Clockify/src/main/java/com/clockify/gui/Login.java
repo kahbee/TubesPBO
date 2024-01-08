@@ -27,6 +27,9 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        // for testing
+        TFemail.setText("admin@admin.com");
+        TFpassword.setText("password");
     }
 
     /**
@@ -64,6 +67,12 @@ public class Login extends javax.swing.JFrame {
         BLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BLoginActionPerformed(evt);
+            }
+        });
+
+        TFpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TFpasswordActionPerformed(evt);
             }
         });
 
@@ -113,7 +122,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TFemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TFemailActionPerformed
-        // TODO add your handling code here:
+        BLoginActionPerformed(evt);
     }//GEN-LAST:event_TFemailActionPerformed
 
     private void BLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BLoginActionPerformed
@@ -157,6 +166,10 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BLoginActionPerformed
+
+    private void TFpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TFpasswordActionPerformed
+        BLoginActionPerformed(evt);
+    }//GEN-LAST:event_TFpasswordActionPerformed
 
     /**
      * @param args the command line arguments

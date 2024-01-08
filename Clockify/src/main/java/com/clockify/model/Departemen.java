@@ -28,4 +28,10 @@ public class Departemen {
     public void setId(int id) {
         this.id = id;
     }
+    
+    @Override
+    public String toString() {
+        // buat tampilan JList
+        return getNama();
+    }
 }
