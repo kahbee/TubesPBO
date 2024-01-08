@@ -9,7 +9,6 @@ import com.clockify.model.PekerjaBiasa;
 import com.clockify.model.Teknisi;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -35,10 +34,7 @@ public class Menu extends javax.swing.JFrame {
     private Departemen DepSel = null;
     
     private ArrayList<Karyawan> KarList = new ArrayList<>();
-    private Karyawan KarSel = null;
     
-    private ArrayList<Absensi> AbList = new ArrayList<>();
-    private Absensi AbSel = null;
     DefaultTableModel TAbsensiModel = new DefaultTableModel(new String[] {"Tanggal", "Jam", "Nama", "Posisi", "Status", "Alasan"}, 0);
 
 
