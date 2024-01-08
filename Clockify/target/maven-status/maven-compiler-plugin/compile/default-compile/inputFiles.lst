@@ -1,20 +1,20 @@
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Registrasi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\DetailKaryawan.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\ListAbsensi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Administrasi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\FormKaryawan.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\DaftarAbsensi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\BisaAbsen.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\TambahTugas.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Departemen.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Karyawan.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\PekerjaBiasa.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Teknisi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Manager.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\clockify\Database.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Absensi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Alasan.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Kantor.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Absensi.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Login.java
-D:\College\SEMESTER 5\PRAKTIKUM PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Menu.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\DetailKaryawan.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Menu.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Departemen.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Absensi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Alasan.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\clockify\Database.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Teknisi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\FormKaryawan.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Login.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\BisaAbsen.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Absensi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\ListAbsensi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\Registrasi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\DaftarAbsensi.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Kantor.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Karyawan.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Manager.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\PekerjaBiasa.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\gui\TambahTugas.java
+D:\KULIAH\SEMESTER 5\PBO\TubesPBO\Clockify\src\main\java\com\clockify\model\Administrasi.java
