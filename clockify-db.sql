@@ -78,7 +78,7 @@ CREATE TABLE `karyawan` (
 --
 
 INSERT INTO `karyawan` (`id`, `nama`, `jenisKelamin`, `noHP`, `email`, `password`, `id_departemen`, `posisi`, `departemenDikelola`) VALUES
-(1, 'admin', 'M', '08123456789', 'admin@admin.com', '$2y$10$OeAhdTig.by9bEitwzGJFeCcEKr1Sgx15.lN45XyY4ozvVl58zMuy', 1, 'administrasi', NULL);
+(1, 'admin', 'M', '08123456789', 'admin@admin.com', '$2a$10$WP5zPviGk8z9HvyrsJ.0g.Gbwyyzz9Qtm/RtFkl1.hQj4idHMG3ou', 1, 'administrasi', NULL);
 
 -- --------------------------------------------------------
 
