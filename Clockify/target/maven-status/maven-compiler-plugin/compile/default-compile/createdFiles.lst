@@ -33,6 +33,7 @@ com\clockify\model\DaftarAbsensi.class
 com\clockify\gui\Menu$2.class
 com\clockify\gui\TambahTugas$1.class
 com\clockify\gui\Menu$1.class
+com\clockify\gui\Menu$10.class
 com\clockify\model\Manager.class
 com\clockify\gui\TambahTugas.class
 com\clockify\gui\DetailKaryawan$2.class

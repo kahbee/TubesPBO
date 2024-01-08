@@ -49,6 +49,7 @@ public class Menu extends javax.swing.JFrame {
         setupDisplay();
         loadDepartemen();
         loadKaryawan();
+        loadAbsensi();
     }
 
     private void setupDisplay() {
@@ -115,11 +116,10 @@ public class Menu extends javax.swing.JFrame {
                 String[] row = new String[]{new SimpleDateFormat("dd MMMM yyyy").format(rs.getDate("a.waktu")), new SimpleDateFormat("HH:mm:ss").format(rs.getTime("a.waktu")), rs.getString("k.nama"), rs.getString("k.posisi"), rs.getString("a.status"), rs.getString("a.alasan")};
                 // Costructor public Absensi(LocalDateTime waktu, Karyawan karyawan, String status, String Alasan)
                 // Conatructor public Karyawan(int id, String nama, String jenisKelamin, String email, String noHP, Departemen departemen)
-                Absensi a = new Absensi(rs.getTimestamp("a.waktu").toLocalDateTime(), new Karyawan(rs.getInt("k.id"), rs.getString("k.nama"), rs.getString("k.jenisKelamin"), rs.getString("k.email"), rs.getString("k.noHP"), new Departemen(rs.getInt("d.id"), rs.getString("d.nama"))), rs.getString("a.status"), rs.getString("a.alasan"));
-                AbList.add(a);
+                
                 TAbsensiModel.addRow(row);
             }
-            TKar.setModel(TAbsensiModel);
+            THis.setModel(TAbsensiModel);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -163,7 +163,7 @@ public class Menu extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        THis = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -396,7 +396,7 @@ public class Menu extends javax.swing.JFrame {
 
         jButton1.setText("Search");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        THis.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -415,7 +415,7 @@ public class Menu extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(THis);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -469,15 +469,18 @@ public class Menu extends javax.swing.JFrame {
         try {
             db.executeUpdate("INSERT INTO absensi (waktu, id_karyawan, status, alasan) VALUES (?, ?, ?, ?)", new Date(), user.getId(), "izin", alasan);
             JOptionPane.showMessageDialog(this, "Izin berhasil dikirim", "Absensi", JOptionPane.INFORMATION_MESSAGE);
+            loadAbsensi();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_BTIzinActionPerformed
 
     private void BTHadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTHadirActionPerformed
         try {
             db.executeUpdate("INSERT INTO absensi (waktu, id_karyawan, status) VALUES (?, ?, ?)", new Date(), user.getId(), "hadir");
             JOptionPane.showMessageDialog(this, "Absensi berhasil dikirim", "Absensi", JOptionPane.INFORMATION_MESSAGE);
+            loadAbsensi();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -590,6 +593,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JList<Departemen> LDep;
     private javax.swing.JTextField TFDepID;
     private javax.swing.JTextField TFDepNama;
+    private javax.swing.JTable THis;
     private javax.swing.JTable TKar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -602,7 +606,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelNama;
     private javax.swing.JLabel labelTanggal;
