@@ -15,12 +15,15 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -38,6 +41,8 @@ public class Menu extends javax.swing.JFrame {
     
     private ArrayList<Absensi> AbList = new ArrayList<>();
     private Absensi AbSel = null;
+    DefaultTableModel TAbsensiModel = new DefaultTableModel(new String[] {"Tanggal", "Jam", "Nama", "Posisi", "Status", "Alasan"}, 0);
+
 
     /**
      * Creates new form Menu
@@ -108,8 +113,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     public void loadAbsensi() {
-        AbList.clear();
-        DefaultTableModel TAbsensiModel = new DefaultTableModel(new String[] {"Tanggal", "Jam", "Nama", "Posisi", "Status", "Alasan"}, 0);
+        TAbsensiModel.setRowCount(0);
         try {
             ResultSet rs = db.executeQuery("SELECT a.waktu, k.nama, k.posisi, a.status, a.alasan FROM absensi a JOIN karyawan k ON a.id_karyawan = k.id");
             while (rs.next()) {
@@ -160,8 +164,8 @@ public class Menu extends javax.swing.JFrame {
         BTKarAdd = new javax.swing.JButton();
         BTKarEdit = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        TFHis = new javax.swing.JTextField();
+        BTSearch = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         THis = new javax.swing.JTable();
 
@@ -198,44 +202,42 @@ public class Menu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LBJam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(LBJam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
+                .addGap(169, 169, 169)
+                .addComponent(BTIzin)
+                .addGap(18, 18, 18)
+                .addComponent(BTHadir)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(157, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(BTIzin)
-                        .addGap(18, 18, 18)
-                        .addComponent(BTHadir))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelTanggal)
-                            .addComponent(labelNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LBTanggal)
-                            .addComponent(LBNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(201, Short.MAX_VALUE))
+                    .addComponent(labelTanggal)
+                    .addComponent(labelNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LBTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LBNama, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(112, 112, 112))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addComponent(LBJam, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelNama)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelTanggal))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(LBNama)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(LBTanggal)))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BTHadir)
-                    .addComponent(BTIzin))
-                .addGap(53, 53, 53))
+                    .addComponent(LBNama)
+                    .addComponent(labelNama))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTanggal)
+                    .addComponent(LBTanggal))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BTIzin)
+                    .addComponent(BTHadir))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Absensi", jPanel1);
@@ -394,7 +396,12 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Karyawan", jPanel2);
 
-        jButton1.setText("Search");
+        BTSearch.setText("Search");
+        BTSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTSearchActionPerformed(evt);
+            }
+        });
 
         THis.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -425,9 +432,9 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TFHis, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(BTSearch))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
@@ -436,8 +443,8 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(TFHis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BTSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
@@ -578,6 +585,35 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BTKarEditActionPerformed
 
+    private void BTSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTSearchActionPerformed
+        // Mendapatkan teks pencarian
+        String searchText = TFHis.getText();
+
+        // Konversi teks pencarian menjadi regex untuk pencarian yang lebih fleksibel
+        String regex = ".*" + Pattern.quote(searchText) + ".*";
+
+        DefaultTableModel THisModel = new DefaultTableModel(new String[]{"Tanggal", "Jam", "Nama", "Posisi", "Status", "Alasan"}, 0);
+
+        for (int i = 0; i < TAbsensiModel.getRowCount(); i++) {
+            Object[] rowData = new Object[6]; // Sesuaikan dengan jumlah kolom
+            for (int j = 0; j < TAbsensiModel.getColumnCount(); j++) {
+                rowData[j] = TAbsensiModel.getValueAt(i, j);
+            }
+
+            // Cek apakah data di baris saat ini sesuai dengan kriteria pencarian
+            if (Pattern.matches(regex, rowData[0].toString()) || 
+                Pattern.matches(regex, rowData[1].toString()) || 
+                Pattern.matches(regex, rowData[2].toString()) || 
+                Pattern.matches(regex, rowData[3].toString()) || 
+                Pattern.matches(regex, rowData[4].toString()) || 
+                rowData[5] != null && Pattern.matches(regex, rowData[5].toString())) {
+                THisModel.addRow(rowData);
+            }
+        }
+
+        THis.setModel(THisModel);
+    }//GEN-LAST:event_BTSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTDepAdd;
     private javax.swing.JButton BTDepCancel;
@@ -587,15 +623,16 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton BTIzin;
     private javax.swing.JButton BTKarAdd;
     private javax.swing.JButton BTKarEdit;
+    private javax.swing.JButton BTSearch;
     private javax.swing.JLabel LBJam;
     private javax.swing.JLabel LBNama;
     private javax.swing.JLabel LBTanggal;
     private javax.swing.JList<Departemen> LDep;
     private javax.swing.JTextField TFDepID;
     private javax.swing.JTextField TFDepNama;
+    private javax.swing.JTextField TFHis;
     private javax.swing.JTable THis;
     private javax.swing.JTable TKar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -606,7 +643,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelNama;
     private javax.swing.JLabel labelTanggal;
     // End of variables declaration//GEN-END:variables

@@ -2,6 +2,7 @@ com\clockify\clockify\Database.class
 com\clockify\gui\Menu$7.class
 com\clockify\gui\Menu.class
 com\clockify\gui\Registrasi.class
+com\clockify\gui\Menu$11.class
 com\clockify\model\Karyawan.class
 com\clockify\gui\DetailKaryawan$1.class
 com\clockify\gui\Registrasi$2.class
@@ -30,6 +31,7 @@ com\clockify\gui\Menu$9.class
 com\clockify\gui\Registrasi$4.class
 com\clockify\gui\Login$2.class
 com\clockify\model\DaftarAbsensi.class
+com\clockify\gui\Menu$12.class
 com\clockify\gui\Menu$2.class
 com\clockify\gui\TambahTugas$1.class
 com\clockify\gui\Menu$1.class
